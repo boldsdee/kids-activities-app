@@ -618,6 +618,25 @@ input[type="date"]:focus {
   .week-grid, .week-view { grid-template-columns: repeat(4,1fr); }
   .yearly-grid { grid-template-columns: repeat(2,1fr); }
   .cal-grid { grid-template-columns: repeat(7,1fr); }
+  
+  /* Make bottom nav responsive */
+  .app-nav {
+    width: 90%;
+    bottom: 10px;
+    padding: 8px 10px;
+    gap: 2px;
+    justify-content: space-between;
+  }
+  .nav-tab {
+    padding: 8px 10px;
+  }
+  .nav-label {
+    font-size: 10px;
+    display: none; /* Hide labels on very small screens to fit icons */
+  }
+  .nav-tab.active .nav-label {
+    display: block; /* Show label only for the active tab to save space */
+  }
 }
 
 /* ── Dynamic Infographics ── */

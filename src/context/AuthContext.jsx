@@ -93,11 +93,20 @@ export const AuthProvider = ({ children }) => {
                 profileData: data
               });
               setLoading(false);
+            }, (error) => {
+              console.error("Subscription listener error:", error);
+              // Gracefully degrade if rules block access
+              setCurrentUser({ ...user, isAdmin, isPro: isAdmin || (data.isPro || false), profileData: data });
+              setLoading(false);
             });
           } else {
             setCurrentUser({ ...user, isPro: false, isAdmin: false });
             setLoading(false);
           }
+        }, (error) => {
+          console.error("Profile listener error:", error);
+          setCurrentUser({ ...user, isPro: false, isAdmin: false });
+          setLoading(false);
         });
       } else {
         setCurrentUser(null);
