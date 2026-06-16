@@ -39,14 +39,15 @@ const Library = () => {
   };
 
   const allActivities = useMemo(() => {
-    return [...customActivities, ...activities];
+    return [...customActivities, ...activities].filter(Boolean);
   }, [activities, customActivities]);
 
   const filtered = useMemo(() => {
     return allActivities.filter(a => {
+      if (!a) return false;
       if (selectedCat !== 'all' && a.category !== selectedCat) return false;
-      if (selectedAge !== 'all' && !String(a.ageRange).includes(selectedAge)) return false;
-      if (search && !a.title.toLowerCase().includes(search.toLowerCase())) return false;
+      if (selectedAge !== 'all' && (!a.ageRange || !String(a.ageRange).includes(selectedAge))) return false;
+      if (search && (!a.title || !a.title.toLowerCase().includes(search.toLowerCase()))) return false;
       if (selectedBudget !== 'all') {
         const bud = a.budgetGBP ?? 0;
         if (selectedBudget === '0'   && bud !== 0)    return false;

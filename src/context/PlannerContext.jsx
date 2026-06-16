@@ -19,9 +19,18 @@ const loadFromStorage = (key, fallback) => {
 export const PlannerProvider = ({ children }) => {
   const { currentUser } = useAuth();
   const [plannedActivities, setPlannedActivities] = useState(() => loadFromStorage(STORAGE_KEY, {}));
-  const [favorites, setFavorites] = useState(() => loadFromStorage(FAVORITES_KEY, []));
-  const [savedPlans, setSavedPlans] = useState(() => loadFromStorage(SAVED_PLANS_KEY, []));
-  const [customActivities, setCustomActivities] = useState(() => loadFromStorage(CUSTOM_ACTIVITIES_KEY, []));
+  const [favorites, setFavorites] = useState(() => {
+    const data = loadFromStorage(FAVORITES_KEY, []);
+    return Array.isArray(data) ? data : [];
+  });
+  const [savedPlans, setSavedPlans] = useState(() => {
+    const data = loadFromStorage(SAVED_PLANS_KEY, []);
+    return Array.isArray(data) ? data : [];
+  });
+  const [customActivities, setCustomActivities] = useState(() => {
+    const data = loadFromStorage(CUSTOM_ACTIVITIES_KEY, []);
+    return Array.isArray(data) ? data : [];
+  });
   
   const isInitialLoad = useRef(true);
 
@@ -35,9 +44,9 @@ export const PlannerProvider = ({ children }) => {
           if (docSnap.exists()) {
             const data = docSnap.data();
             setPlannedActivities(data.plannedActivities || {});
-            setFavorites(data.favorites || []);
-            setSavedPlans(data.savedPlans || []);
-            setCustomActivities(data.customActivities || []);
+            setFavorites(Array.isArray(data.favorites) ? data.favorites : []);
+            setSavedPlans(Array.isArray(data.savedPlans) ? data.savedPlans : []);
+            setCustomActivities(Array.isArray(data.customActivities) ? data.customActivities : []);
           }
         } catch (error) {
           console.error("Error loading planner data from Firestore:", error);

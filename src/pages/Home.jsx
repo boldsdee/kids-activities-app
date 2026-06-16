@@ -76,17 +76,17 @@ const Home = () => {
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px,1fr))', gap: '18px' }}>
-            {todayActivities.map(a => (
+            {todayActivities.filter(Boolean).map(a => (
               <div key={a.id} style={{
                 background: 'var(--bg-card)', padding: '20px', borderRadius: '20px',
                 boxShadow: 'var(--shadow-card)', display: 'flex', alignItems: 'center', gap: '14px',
-                borderLeft: `6px solid ${catMap[a.category]?.color}`, border: '1px solid var(--border)',
-                borderLeft: `6px solid ${catMap[a.category]?.color}`
+                border: '1px solid var(--border)',
+                borderLeft: `6px solid ${catMap[a.category]?.color || '#A78BFA'}`
               }}>
-                <span style={{ fontSize: '30px' }}>{catMap[a.category]?.icon}</span>
+                <span style={{ fontSize: '30px' }}>{catMap[a.category]?.icon || '✨'}</span>
                 <div>
                   <h4 style={{ fontSize: '17px', marginBottom: '4px' }}>{a.title}</h4>
-                  <span style={{ fontSize: '12px', color: 'var(--text-soft)' }}>{a.duration} • {catMap[a.category]?.name}</span>
+                  <span style={{ fontSize: '12px', color: 'var(--text-soft)' }}>{a.duration} • {catMap[a.category]?.name || 'Activity'}</span>
                 </div>
               </div>
             ))}

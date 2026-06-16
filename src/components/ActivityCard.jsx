@@ -18,6 +18,7 @@ const budgetLabel = (gbp) => {
 };
 
 const ActivityCard = ({ activity, compact, onDragStart, showAdd, targetDate, onEdit, isLocked }) => {
+  if (!activity) return null;
   const [expanded, setExpanded] = useState(false);
   const { toggleFavorite, isFavorite, addToPlan } = usePlanner();
   const navigate = useNavigate();

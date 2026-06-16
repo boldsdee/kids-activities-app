@@ -183,7 +183,7 @@ const Planner = () => {
     }
 
     doc.save(`Kids_Activities_${range}_plan.pdf`);
-    setShowDownloadMenu(false);
+    setIsDownloadModalOpen(false);
   };
 
   return (

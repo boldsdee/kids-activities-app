@@ -17,11 +17,11 @@ const CategoryPage = () => {
   const category = useMemo(() => categories.find(c => c.id === categoryId), [categoryId]);
 
   const allActivities = useMemo(() => {
-    return [...customActivities, ...activities];
+    return [...customActivities, ...activities].filter(Boolean);
   }, [activities, customActivities]);
 
   const categoryActivities = useMemo(() => {
-    return allActivities.filter(a => a.category === categoryId);
+    return allActivities.filter(a => a && a.category === categoryId);
   }, [allActivities, categoryId]);
 
   if (!category) {
