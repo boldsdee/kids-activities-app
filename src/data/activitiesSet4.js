@@ -72,7 +72,7 @@ export const activitiesSet4 = [
   {
     id: "a408",
     title: "Create a Comic Book",
-    category: "storytelling",
+    category: "stories",
     ageRange: "7-12",
     duration: "60+ min",
     difficulty: "Medium",
@@ -142,7 +142,7 @@ export const activitiesSet4 = [
   {
     id: "a415",
     title: "Write a Short Play",
-    category: "storytelling",
+    category: "stories",
     ageRange: "8-12",
     duration: "60+ min",
     difficulty: "Medium",
@@ -212,7 +212,7 @@ export const activitiesSet4 = [
   {
     id: "a422",
     title: "Make a Time Capsule",
-    category: "storytelling",
+    category: "stories",
     ageRange: "7-12",
     duration: "45 min",
     difficulty: "Medium",
@@ -342,7 +342,7 @@ export const activitiesSet4 = [
   {
     id: "a435",
     title: "Create a Family Tree",
-    category: "storytelling",
+    category: "stories",
     ageRange: "7-12",
     duration: "60 min",
     difficulty: "Medium",
@@ -492,7 +492,7 @@ export const activitiesSet4 = [
   {
     id: "a450",
     title: "Create a Scrapbook",
-    category: "storytelling",
+    category: "stories",
     ageRange: "8-12",
     duration: "60+ min",
     difficulty: "Medium",
@@ -572,7 +572,7 @@ export const activitiesSet4 = [
   {
     id: "a458",
     title: "Write a Letter to a Relative",
-    category: "storytelling",
+    category: "stories",
     ageRange: "7-12",
     duration: "30 min",
     difficulty: "Easy",
@@ -622,7 +622,7 @@ export const activitiesSet4 = [
   {
     id: "a463",
     title: "Learn a Few Words in a New Language",
-    category: "storytelling",
+    category: "stories",
     ageRange: "7-12",
     duration: "30 min",
     difficulty: "Easy",

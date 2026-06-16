@@ -90,7 +90,7 @@ export const activitiesSet5 = [
   {
     id: "a5009",
     title: "Sock Puppet Theatre",
-    category: "storytelling",
+    category: "stories",
     ageRange: "3-7",
     duration: "60 min",
     difficulty: "Easy",
@@ -145,7 +145,7 @@ export const activitiesSet5 = [
   {
     id: "a5014",
     title: "Story Dice",
-    category: "storytelling",
+    category: "stories",
     ageRange: "5-11",
     duration: "40 min",
     difficulty: "Easy",
@@ -255,7 +255,7 @@ export const activitiesSet5 = [
   {
     id: "a5024",
     title: "Pillow Fort Movie Night",
-    category: "storytelling",
+    category: "stories",
     ageRange: "3-10",
     duration: "2 hrs",
     difficulty: "Easy",
@@ -552,7 +552,7 @@ export const activitiesSet5 = [
   {
     id: "a5051",
     title: "Make Your Own Comics Kit",
-    category: "storytelling",
+    category: "stories",
     ageRange: "7-12",
     duration: "90 min",
     difficulty: "Medium",
