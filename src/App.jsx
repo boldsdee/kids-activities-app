@@ -3,10 +3,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { PlannerProvider } from './context/PlannerContext';
 import Navigation from './components/Navigation';
+import InAppSurveyModal from './components/InAppSurveyModal';
 
-// App Pages
 import Home from './pages/Home';
 import Library from './pages/Library';
+import CategoryPage from './pages/CategoryPage';
 import Planner from './pages/Planner';
 import Calendar from './pages/Calendar';
 import SavedPlans from './pages/SavedPlans';
@@ -22,6 +23,8 @@ import LandingPage from './pages/LandingPage';
 import PricingPage from './pages/PricingPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import SurveyPage from './pages/SurveyPage';
+import PublicSurvey from './pages/PublicSurvey';
 
 import './index.css';
 
@@ -38,6 +41,7 @@ const ProtectedApp = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/library" element={<Library />} />
+          <Route path="/category/:categoryId" element={<CategoryPage />} />
           <Route path="/planner" element={<Planner />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/saved" element={<SavedPlans />} />
@@ -46,6 +50,7 @@ const ProtectedApp = () => {
         </Routes>
       </main>
       <Navigation />
+      <InAppSurveyModal />
     </div>
   );
 };
@@ -60,6 +65,8 @@ const AppRoutes = () => {
       <Route path="/pricing" element={<PricingPage />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/terms" element={<TermsOfService />} />
+      <Route path="/survey/:id" element={<SurveyPage />} />
+      <Route path="/feedback" element={<PublicSurvey />} />
       <Route path="/app/*" element={<ProtectedApp />} />
       <Route 
         path="/admin/*" 

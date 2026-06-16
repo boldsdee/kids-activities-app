@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { db } from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
-import { Settings, Users, Activity, ChevronRight, CheckCircle, XCircle } from 'lucide-react';
+import { Settings, Users, Activity, ChevronRight, CheckCircle, XCircle, MessageSquare } from 'lucide-react';
 import { activities } from '../../data/activities';
 
 const AdminDashboard = () => {
   const { currentUser } = useAuth();
   const [users, setUsers] = useState([]);
+  const [surveyResponses, setSurveyResponses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('users');
 
@@ -20,6 +21,13 @@ const AdminDashboard = () => {
           usersList.push({ id: doc.id, ...doc.data() });
         });
         setUsers(usersList);
+
+        const surveySnapshot = await getDocs(collection(db, 'survey_responses'));
+        const surveyList = [];
+        surveySnapshot.forEach((doc) => {
+          surveyList.push({ id: doc.id, ...doc.data() });
+        });
+        setSurveyResponses(surveyList);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -63,6 +71,12 @@ const AdminDashboard = () => {
               style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', borderRadius: '12px', background: activeTab === 'activities' ? 'var(--primary)' : 'transparent', color: activeTab === 'activities' ? '#fff' : 'var(--text-soft)', border: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'Outfit', fontSize: '16px', fontWeight: 'bold' }}
             >
               <Activity size={20} /> Activity Manager
+            </button>
+            <button 
+              onClick={() => setActiveTab('surveys')}
+              style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', borderRadius: '12px', background: activeTab === 'surveys' ? 'var(--primary)' : 'transparent', color: activeTab === 'surveys' ? '#fff' : 'var(--text-soft)', border: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'Outfit', fontSize: '16px', fontWeight: 'bold' }}
+            >
+              <MessageSquare size={20} /> Survey Results
             </button>
             <button 
               onClick={() => setActiveTab('settings')}
@@ -177,6 +191,60 @@ const AdminDashboard = () => {
                       Showing first 100 activities...
                     </div>
                   )}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'surveys' && (
+              <div>
+                <h2 style={{ fontSize: '24px', marginBottom: '24px' }}>Survey Responses</h2>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '40px' }}>
+                  <div style={{ background: 'var(--bg-card)', padding: '24px', borderRadius: '16px', border: '1px solid var(--border)' }}>
+                    <div style={{ color: 'var(--text-soft)', marginBottom: '8px' }}>Total Responses</div>
+                    <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#34D399' }}>{surveyResponses.length}</div>
+                  </div>
+                </div>
+
+                <div style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', overflow: 'hidden' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                    <thead>
+                      <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--border)' }}>
+                        <th style={{ padding: '16px', color: 'var(--text-soft)', fontWeight: 'normal', width: '20%' }}>Date</th>
+                        <th style={{ padding: '16px', color: 'var(--text-soft)', fontWeight: 'normal', width: '40%' }}>Question / Topic</th>
+                        <th style={{ padding: '16px', color: 'var(--text-soft)', fontWeight: 'normal', width: '40%' }}>Answer</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {surveyResponses.sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0)).map(response => (
+                        <tr key={response.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                          <td style={{ padding: '16px', color: 'var(--text-soft)', verticalAlign: 'top' }}>
+                            {response.submittedAt ? new Date(response.submittedAt).toLocaleDateString() : 'Unknown'}
+                            <br/>
+                            <span style={{ fontSize: '12px', opacity: 0.7 }}>
+                              {response.submittedAt ? new Date(response.submittedAt).toLocaleTimeString() : ''}
+                            </span>
+                          </td>
+                          <td style={{ padding: '16px', fontWeight: 'bold', verticalAlign: 'top', lineHeight: 1.5 }}>
+                            {response.questionText || response.surveyTitle || 'Unknown Question'}
+                          </td>
+                          <td style={{ padding: '16px', verticalAlign: 'top', lineHeight: 1.5 }}>
+                            {typeof response.answer === 'string' 
+                              ? response.answer 
+                              : JSON.stringify(response.answers || response.answer)}
+                          </td>
+                        </tr>
+                      ))}
+                      {surveyResponses.length === 0 && !loading && (
+                        <tr>
+                          <td colSpan="3" style={{ padding: '32px', textAlign: 'center', color: 'var(--text-soft)' }}>
+                            No survey responses recorded yet.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                  {loading && <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-soft)' }}>Loading responses...</div>}
                 </div>
               </div>
             )}

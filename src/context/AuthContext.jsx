@@ -6,9 +6,10 @@ import {
   onAuthStateChanged,
   updateProfile,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  sendEmailVerification
 } from 'firebase/auth';
-import { doc, setDoc, getDoc, onSnapshot, collection, query, where } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc, onSnapshot, collection, query, where } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 
 const AuthContext = createContext();
@@ -29,14 +30,55 @@ export const AuthProvider = ({ children }) => {
       displayName,
       isPro: false,
       isAdmin: false,
+      loginCount: 0,
+      surveyIndex: 0,
       createdAt: new Date().toISOString()
     });
+
+    // Send verification email and sign out immediately so they can't access the app yet
+    await sendEmailVerification(userCredential.user);
+    await signOut(auth);
 
     return userCredential;
   };
 
-  const login = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
+  const login = async (email, password) => {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    
+    // Check if they are an admin
+    let isAdmin = false;
+    try {
+      const userRef = doc(db, 'users', userCredential.user.uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists() && userSnap.data().isAdmin === true) {
+        isAdmin = true;
+      }
+    } catch (e) {
+      console.error("Error checking admin status during login", e);
+    }
+    
+    // Block login if email is not verified AND they are not an admin
+    if (!userCredential.user.emailVerified && !isAdmin) {
+      await signOut(auth);
+      throw new Error("Please check your inbox and verify your email address before logging in.");
+    }
+    
+    // Increment login tracking
+    try {
+      const userRef = doc(db, 'users', userCredential.user.uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        await updateDoc(userRef, {
+          loginCount: (data.loginCount || 0) + 1,
+          surveyIndex: data.surveyIndex !== undefined ? data.surveyIndex : 0
+        });
+      }
+    } catch (e) {
+      console.error("Failed to update login tracking", e);
+    }
+    
+    return userCredential;
   };
 
   const loginWithGoogle = async () => {
@@ -52,7 +94,15 @@ export const AuthProvider = ({ children }) => {
         displayName: result.user.displayName,
         isPro: false,
         isAdmin: false,
+        loginCount: 1,
+        surveyIndex: 0,
         createdAt: new Date().toISOString()
+      });
+    } else {
+      const data = docSnap.data();
+      await updateDoc(userRef, {
+        loginCount: (data.loginCount || 0) + 1,
+        surveyIndex: data.surveyIndex !== undefined ? data.surveyIndex : 0
       });
     }
 

@@ -24,6 +24,33 @@ const ActivityCard = ({ activity, compact, onDragStart, showAdd, targetDate, onE
   const cat = categoryMap[activity.category] || {};
   const bLabel = budgetLabel(activity.budgetGBP);
 
+  const renderTextWithLinks = (text) => {
+    if (!text) return null;
+    const urlRegex = /(https?:\/\/[^\s]+|[a-zA-Z0-9.-]+\.(?:com|org|net|edu|gov|io)[^\s]*)/g;
+    const parts = text.split(urlRegex);
+    return parts.map((part, i) => {
+      if (part.match(urlRegex)) {
+        let cleanPart = part;
+        const punctuationMatch = cleanPart.match(/([.,!?;:)]+)$/);
+        let trailing = '';
+        if (punctuationMatch) {
+          trailing = punctuationMatch[1];
+          cleanPart = cleanPart.slice(0, -trailing.length);
+        }
+        let href = cleanPart;
+        if (!href.startsWith('http')) href = 'https://' + href;
+        
+        return (
+          <React.Fragment key={i}>
+            <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: '#60A5FA', textDecoration: 'underline' }}>{cleanPart}</a>
+            {trailing}
+          </React.Fragment>
+        );
+      }
+      return part;
+    });
+  };
+
   const handleDragStart = (e) => {
     if (isLocked) {
       e.preventDefault();
@@ -112,7 +139,7 @@ const ActivityCard = ({ activity, compact, onDragStart, showAdd, targetDate, onE
               <strong>What you'll need:</strong>
               <p>{Array.isArray(activity.materials) ? activity.materials.join(', ') : activity.materials}</p>
               <strong style={{ marginTop: '14px' }}>Steps:</strong>
-              <p>{activity.instructions}</p>
+              <p>{renderTextWithLinks(activity.instructions)}</p>
             </div>
           )}
         </>

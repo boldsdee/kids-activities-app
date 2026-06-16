@@ -6,6 +6,10 @@ import { activitiesSet5 } from './activitiesSet5';
 import { activitiesSet6 } from './activitiesSet6';
 import { bibleActivities } from './bibleActivities';
 import { scienceActivities } from './scienceActivities';
+import { activitiesSet7 } from './activitiesSet7';
+import { activitiesSet8 } from './activitiesSet8';
+import { activitiesSet9 } from './activitiesSet9';
+
 export const activities = [
   ...activitiesSet1,
   ...activitiesSet2,
@@ -15,4 +19,7 @@ export const activities = [
   ...activitiesSet6,
   ...bibleActivities,
   ...scienceActivities,
+  ...activitiesSet7,
+  ...activitiesSet8,
+  ...activitiesSet9,
 ];

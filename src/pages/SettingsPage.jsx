@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, User, Key, CreditCard, Shield } from 'lucide-react';
+import { LogOut, User, Key, CreditCard, Shield, Copy, CheckCircle2 } from 'lucide-react';
 import { db } from '../firebase';
 import { collection, addDoc, onSnapshot } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
@@ -11,6 +11,14 @@ const SettingsPage = () => {
 
   const isPro = currentUser?.isPro || false; 
   const isAdmin = currentUser?.isAdmin || false;
+  const [copiedLink, setCopiedLink] = useState(null);
+
+  const copyToClipboard = (id) => {
+    const url = `${window.location.origin}/survey/${id}`;
+    navigator.clipboard.writeText(url);
+    setCopiedLink(id);
+    setTimeout(() => setCopiedLink(null), 2000);
+  };
 
   const handleLogout = async () => {
     try {
@@ -102,6 +110,34 @@ const SettingsPage = () => {
           </button>
         )}
       </div>
+
+      {/* Survey Management (Admin Only) */}
+      {isAdmin && (
+        <div style={{ background: 'var(--bg-card)', padding: '24px', borderRadius: '16px', border: '1px solid var(--border)', marginBottom: '24px' }}>
+          <h2 style={{ fontSize: '20px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px', color: '#34D399' }}>
+            <Copy size={20} color="#34D399" /> Survey Distribution Links
+          </h2>
+          <p style={{ color: 'var(--text-soft)', marginBottom: '20px', lineHeight: 1.5, fontSize: '14px' }}>
+            Share these links to collect market research. Variations 1-3 are multiple choice, 4-5 are open-ended.
+          </p>
+          <div style={{ display: 'grid', gap: '12px' }}>
+            {[1, 2, 3, 4, 5].map(id => (
+              <div key={id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)', borderRadius: '12px' }}>
+                <span style={{ color: 'var(--text-main)', fontSize: '14px', fontFamily: 'monospace' }}>
+                  /survey/{id}
+                </span>
+                <button 
+                  onClick={() => copyToClipboard(id)}
+                  style={{ background: copiedLink === id ? 'rgba(52, 211, 153, 0.2)' : 'rgba(255,255,255,0.1)', color: copiedLink === id ? '#34D399' : 'var(--text-main)', border: 'none', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', transition: 'all 0.2s' }}
+                >
+                  {copiedLink === id ? <CheckCircle2 size={14} /> : <Copy size={14} />}
+                  {copiedLink === id ? 'Copied!' : 'Copy Link'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Admin Panel Link */}
       {isAdmin && (

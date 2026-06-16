@@ -54,5 +54,11 @@ service cloud.firestore {
         allow read: if true;
       }
     }
+    
+    // 5. Survey Responses
+    match /survey_responses/{document=**} {
+      allow create: if true; // Anyone can submit a survey
+      allow read, update, delete: if isAdmin(); // Only admins can view the results
+    }
   }
 }

@@ -43,7 +43,7 @@ const Home = () => {
         <div className="cat-grid">
           {categories.map(cat => (
             <Link
-              to={`/library?category=${cat.id}`}
+              to={`/app/category/${cat.id}`}
               key={cat.id}
               className="cat-card"
               style={{ '--cat-color': cat.color, '--cat-glow': CAT_GLOWS[cat.id] || 'rgba(167,139,250,0.35)' }}
@@ -61,7 +61,7 @@ const Home = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '22px' }}>
           <h2 className="section-heading" style={{ marginBottom: 0 }}>Today's Magic ✨</h2>
           {todayActivities.length > 0 && (
-            <Link to="/planner" style={{ color: 'var(--p-purple)', fontWeight: 'bold', textDecoration: 'none', fontSize: '15px' }}>
+            <Link to="/app/planner" style={{ color: 'var(--p-purple)', fontWeight: 'bold', textDecoration: 'none', fontSize: '15px' }}>
               Open Planner →
             </Link>
           )}
@@ -72,7 +72,7 @@ const Home = () => {
             <span>🎨</span>
             <h3>Nothing planned yet!</h3>
             <p>Start by picking a fun activity from the library.</p>
-            <Link to="/library" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-flex' }}>Browse Library</Link>
+            <Link to="/app/library" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-flex' }}>Browse Library</Link>
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px,1fr))', gap: '18px' }}>

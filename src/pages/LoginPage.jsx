@@ -7,6 +7,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   
   const { login, signup, loginWithGoogle } = useAuth();
@@ -14,6 +15,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
     setLoading(true);
 
     try {
@@ -21,6 +23,9 @@ const LoginPage = () => {
         await login(email, password);
       } else {
         await signup(email, password, name);
+        setIsLogin(true);
+        setSuccess('Account created! Please check your inbox for a verification link before logging in.');
+        setPassword(''); // Clear password for safety
       }
     } catch (err) {
       setError(err.message.replace('Firebase: ', ''));
@@ -81,8 +86,14 @@ const LoginPage = () => {
         </div>
 
         {error && (
-          <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', color: '#FCA5A5', padding: '12px', borderRadius: '12px', marginBottom: '20px', fontSize: '14px' }}>
+          <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', color: '#FCA5A5', padding: '12px', borderRadius: '12px', marginBottom: '20px', fontSize: '14px', lineHeight: '1.4' }}>
             {error}
+          </div>
+        )}
+
+        {success && (
+          <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#6EE7B7', padding: '12px', borderRadius: '12px', marginBottom: '20px', fontSize: '14px', lineHeight: '1.4' }}>
+            {success}
           </div>
         )}
 
@@ -144,7 +155,7 @@ const LoginPage = () => {
           {isLogin ? "Don't have an account? " : "Already have an account? "}
           <button 
             type="button"
-            onClick={() => { setIsLogin(!isLogin); setError(''); }}
+            onClick={() => { setIsLogin(!isLogin); setError(''); setSuccess(''); }}
             style={{ background: 'none', border: 'none', color: '#60A5FA', cursor: 'pointer', fontFamily: 'Outfit', fontSize: '14px', padding: 0 }}
           >
             {isLogin ? 'Sign up' : 'Log in'}

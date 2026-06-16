@@ -9,5 +9,13 @@ export const categories = [
   { id: 'nature', name: 'Nature & Garden', icon: '🌱', color: '#4CAF50', description: 'Explore plants, bugs and the natural world' },
   { id: 'mindfulness', name: 'Mindfulness', icon: '🧘', color: '#9C27B0', description: 'Calm activities for focus and relaxation' },
   { id: 'physical', name: 'Physical Games', icon: '⚽', color: '#F44336', description: 'Active games to burn energy and build skills' },
-  { id: 'bible', name: 'Bible & Faith', icon: '🕊️', color: '#FCD34D', description: 'Christian stories, games, and activities to grow in faith' }
+  { id: 'bible', name: 'Bible & Faith', icon: '🕊️', color: '#FCD34D', description: 'Christian stories, games, and activities to grow in faith' },
+  { id: 'sports', name: 'Sports & Athletics', icon: '🏅', color: '#EF4444', description: 'Team sports, drills, and athletic skill building' },
+  { id: 'design', name: 'Design & Graphics', icon: '📐', color: '#EAB308', description: 'Typography, layout, color theory, and digital art' },
+  { id: 'coding', name: 'Coding & Tech', icon: '💻', color: '#3B82F6', description: 'Programming, logic, algorithms, and digital creation' },
+  { id: 'maths', name: 'Maths & Numbers', icon: '🧮', color: '#10B981', description: 'Counting, geometry, fractions, and logical puzzles' },
+  { id: 'english', name: 'English & Writing', icon: '📝', color: '#8B5CF6', description: 'Vocabulary, grammar, creative writing, and poetry' },
+  { id: 'baking', name: 'Baking & Desserts', icon: '🥖', color: '#F43F5E', description: 'Breads, cakes, measuring, and oven science' },
+  { id: 'boardgames', name: 'Board Games', icon: '🎲', color: '#14B8A6', description: 'Tabletop games, strategy, rules, and family fun' },
+  { id: 'cleaning', name: 'Cleaning & Chores', icon: '🧹', color: '#64748B', description: 'Organizing, sweeping, sorting, and life skills' }
 ];
